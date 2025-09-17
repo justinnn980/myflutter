@@ -1,16 +1,10 @@
-# myflutter
+# myfluttercount
 
-A new Flutter project.
+MY FLUTTER COUNT APP, Full Stack 개발
 
 ## Getting Started
 
 This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+새로운 플로터 프로젝트
+이 프로젝트는 Flutter 개발을 시작하면서 빠른기간안에 앱의 전체적은 그림을 백엔드부터 프론트까지 만드는걸 목표로 하고있습니다. (2025-09-17)
