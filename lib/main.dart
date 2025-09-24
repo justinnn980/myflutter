@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:myflutter/src/model/number.dart';
 import 'package:myflutter/util/helper/network_helper.dart';
 import 'package:logger/logger.dart';
 
@@ -58,27 +61,38 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void searchNumberList() async {
     try {
-      // final res = await Dio(BaseOptions(
-      //   baseUrl: 'https://jsonplaceholder.typicode.com',
-      //   connectTimeout: const Duration(seconds: 10), // 연결 타임아웃
-      //   receiveTimeout: const Duration(seconds: 15), // 데이터 수신 타임아웃
-      // )).get('/todos/1');
-
-      // final res = await Dio(BaseOptions(
-      //   baseUrl: 'http://192.168.0.130:8083',
-      // )).get('/api/numbers/numberAll');
       final res = await NetworkHelper.dio.get(
         'http://172.17.12.94:8083/api/numbers/numberAll',
       );
-      logger.d(res.data);
-      logger.d('Response Status: ${res.statusCode}');
-      logger.d('Response Headers: ${res.headers}');
-      logger.d('Response Data: ${res.data}');
+
+
+      final List<dynamic> data = res.data is String
+          ? jsonDecode(res.data)
+          : res.data;
+
+      final fetchedNumbers = data
+          .map((item) => Number.fromJson(item as Map<String, dynamic>))
+          .toList();
+
+      setState(() {
+        numberList = fetchedNumbers;
+      });
+
+      logger.d('✅ numbers: $numberList');
     } catch (e, s) {
       logger.d('fall NumberAll', error: e, stackTrace: s);
     }
   }
 
+  void numbertotal() async {
+    try {
+      final res = await NetworkHelper.dio.get(
+        'http://172.17.12.94:8083/api/numbers/total',
+      );
+    } catch (e, s) {
+      logger.d('fall total', error: e, stackTrace: s);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
