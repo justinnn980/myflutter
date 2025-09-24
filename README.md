@@ -27,3 +27,12 @@ api 연결
 1. MVVM
 
 테스트코드 작성
+
+
+>Spring-Boot 작업 내용
+API
+>Post 숫자증가
+>Get id로 조회
+>Get count로 조회
+>Get 전체 조회
+>Delete 전체삭제
