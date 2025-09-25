@@ -29,12 +29,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Deddmo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Hssome Page'),
+      home: const MyHomePage(title: '숫자 증가 App'),
     );
   }
 }
@@ -57,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //   });
   // }
 
-  List numberList = [];
+  List<Number> numberList = [];
 
   void searchNumberList() async {
     try {
@@ -65,11 +64,11 @@ class _MyHomePageState extends State<MyHomePage> {
         'http://172.17.12.94:8083/api/numbers/numberAll',
       );
 
+      final List<dynamic> data =
+          res.data is String ? jsonDecode(res.data) : res.data;
 
-      final List<dynamic> data = res.data is String
-          ? jsonDecode(res.data)
-          : res.data;
-
+      // Number.fromJson(data[0]);
+      /// for 문이라고 생각하면 됨
       final fetchedNumbers = data
           .map((item) => Number.fromJson(item as Map<String, dynamic>))
           .toList();
@@ -89,10 +88,56 @@ class _MyHomePageState extends State<MyHomePage> {
       final res = await NetworkHelper.dio.get(
         'http://172.17.12.94:8083/api/numbers/total',
       );
+      logger.d('$res');
     } catch (e, s) {
       logger.d('fall total', error: e, stackTrace: s);
     }
   }
+
+  void postCount() async {
+    try {
+      final res = await NetworkHelper.dio.post(
+        'http://172.17.12.94:8083/api/numbers',
+      );
+      final data = res.data is String ? jsonDecode(res.data) : res.data;
+
+      final number = Number.fromJson(data as Map<String, dynamic>);
+
+      setState(() {
+        numberList = [number]; // 리스트로 감싸줌
+      });
+
+
+    } catch (e,s) {
+      logger.d('fall post Count', error: e, stackTrace: s);
+    }
+  }
+
+  void deleteAll() async {
+    try {
+      final res = await NetworkHelper.dio.delete(
+        'http://172.17.12.94:8083/api/numbers/deleteall',
+      );
+      final data = res.data is String ? jsonDecode(res.data) : res.data;
+
+      final number = Number.fromJson(data as Map<String, dynamic>);
+
+      setState(() {
+        numberList = [number]; // 리스트로 감싸줌
+      });
+
+
+    } catch (e,s) {
+      logger.d('fall Delete All', error: e, stackTrace: s);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    searchNumberList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,19 +150,42 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              '숫자 확인',
             ),
-            Text(
-              '0',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            if (numberList.isEmpty)
+              Text(
+                '0',
+                style: Theme.of(context).textTheme.headlineMedium,
+              )
+            else
+              Text(
+                numberList[numberList.length - 1].count.toString(),
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: searchNumberList,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      floatingActionButton: Stack(
+        children: <Widget>[
+          Align(
+            alignment: Alignment(
+              Alignment.bottomRight.x, Alignment.bottomRight.y - 0.2
+            ),
+            child: FloatingActionButton(
+              onPressed: deleteAll,
+              tooltip: 'Increment',
+              child: const Icon(Icons.refresh),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: FloatingActionButton(
+              onPressed: postCount,
+              tooltip: 'Increment',
+              child: const Icon(Icons.add),
+            ),
+          )
+        ],
       ),
     );
   }
