@@ -48,14 +48,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // int _counter = 0;
-  //
-  // void _incrementCounter() {
-  //   setState(() {
-  //     _counter++;
-  //   });
-  // }
-
   List<Number> numberList = [];
 
   void searchNumberList() async {
@@ -106,9 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         numberList = [number]; // 리스트로 감싸줌
       });
-
-
-    } catch (e,s) {
+    } catch (e, s) {
       logger.d('fall post Count', error: e, stackTrace: s);
     }
   }
@@ -125,9 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         numberList = [number]; // 리스트로 감싸줌
       });
-
-
-    } catch (e,s) {
+    } catch (e, s) {
       logger.d('fall Delete All', error: e, stackTrace: s);
     }
   }
@@ -144,6 +132,30 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ), child: Text('여러 앱'),
+            ),
+            ListTile(
+              title: Text('숮자 증가'),
+              onTap: () {
+
+              },
+            ),
+            ListTile(
+              title: Text('갓챠'),
+              onTap: () {
+
+              },
+            )
+          ],
+        ),
       ),
       body: Center(
         child: Column(
@@ -169,8 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           Align(
             alignment: Alignment(
-              Alignment.bottomRight.x, Alignment.bottomRight.y - 0.2
-            ),
+                Alignment.bottomRight.x, Alignment.bottomRight.y - 0.2),
             child: FloatingActionButton(
               onPressed: deleteAll,
               tooltip: 'Increment',
