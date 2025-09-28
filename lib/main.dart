@@ -2,11 +2,22 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:myflutter/src/model/number.dart';
 import 'package:myflutter/util/helper/network_helper.dart';
 import 'package:logger/logger.dart';
 
 void main() {
+
+  // 웹 환경에서 카카오 로그인을 정상적으로 완료하려면 runApp() 호출 전 아래 메서드 호출 필요
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // runApp() 호출 전 Flutter SDK 초기화
+  KakaoSdk.init(
+    nativeAppKey: '${62bbecca9a5b075f3e85a0f275b1ddbd}',
+    javaScriptAppKey: '${1fe083a21d15689bc4838760043429b3}',
+  );
+
   runApp(const MyApp());
 }
 
@@ -53,7 +64,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void searchNumberList() async {
     try {
       final res = await NetworkHelper.dio.get(
-        'http://172.17.12.94:8083/api/numbers/numberAll',
+        ///회사
+        // 'http://172.17.12.94:8083/api/numbers/numberAll',
+        'http://172.30.1.85:8083/api/numbers/numberAll',
       );
 
       final List<dynamic> data =
