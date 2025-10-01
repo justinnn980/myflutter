@@ -3,7 +3,7 @@
 **목표:**  
 Flutter 개발을 시작하며, **백엔드부터 프론트까지 앱의 전체적인 구조**를 빠른 기간 안에 구현하는 것을 목표로 합니다.
 
-![프로젝트 이미지](https://github.com/user-attachments/assets/d1070a01-0ff9-4ff0-a413-d13d8dcd1150)
+![프로젝트 이미지](https://github.com/user-attachments/assets/cb583379-f9d5-4c40-8fe4-598215e69cff)
 
 ---
 
