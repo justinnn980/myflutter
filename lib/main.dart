@@ -106,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void deleteAll() async {
     try {
       final res = await NetworkHelper.dio.delete(
-        'http://172.17.12.94:8083/api/numbers/deleteall',
+        'https://hello-spring-3t9w.onrender.com/api/numbers/deleteall',
       );
       final data = res.data is String ? jsonDecode(res.data) : res.data;
 
