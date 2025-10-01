@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void searchNumberList() async {
     try {
       final res = await NetworkHelper.dio.get(
-        'http://172.17.12.94:8083/api/numbers/numberAll',
+        'https://hello-spring-3t9w.onrender.com/api/numbers/numberAll',
       );
 
       final List<dynamic> data =
@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void numbertotal() async {
     try {
       final res = await NetworkHelper.dio.get(
-        'http://172.17.12.94:8083/api/numbers/total',
+        'https://hello-spring-3t9w.onrender.com/api/numbers/total',
       );
       logger.d('$res');
     } catch (e, s) {
@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void postCount() async {
     try {
       final res = await NetworkHelper.dio.post(
-        'http://172.17.12.94:8083/api/numbers',
+        'https://hello-spring-3t9w.onrender.com/api/numbers',
       );
       final data = res.data is String ? jsonDecode(res.data) : res.data;
 
