@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:myflutter/src/model/number.dart';
 import 'package:myflutter/util/helper/network_helper.dart';
 import 'package:logger/logger.dart';
+
+import 'ad_helper.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,6 +29,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -49,6 +53,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Number> numberList = [];
+
+  // TODO: Add _kAdIndex
+  static final _kAdIndex = 4;
+
+  // TODO: Add a banner ad instance
+  BannerAd? _ad;
+  int _getDestinationItemIndex(int rawIndex) {
+    if (rawIndex >= _kAdIndex && _ad != null) {
+      return rawIndex - 1;
+    }
+    return rawIndex;
+  }
 
   void searchNumberList() async {
     try {
@@ -124,6 +140,37 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     searchNumberList();
+
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _ad = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          // Releases an ad resource when it fails to load
+          ad.dispose();
+          print('Ad load failed (code=${error.code} message=${error.message})');
+        },
+      ),
+    ).load();
+  }
+
+  @override
+  void dispose() {
+    // TODO: Dispose a BannerAd object
+    _ad?.dispose();
+
+    super.dispose();
+  }
+
+  Future<InitializationStatus> _initGoogleMobileAds() {
+    // TODO: Initialize Google Mobile Ads SDK
+    return MobileAds.instance.initialize();
   }
 
   @override
