@@ -1,14 +1,17 @@
 plugins {
     id "com.android.application"
-    id "kotlin-android"
+    id "org.jetbrains.kotlin.android"
     id "dev.flutter.flutter-gradle-plugin"
 }
+
+import java.util.Properties
+import java.io.FileInputStream
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader("UTF-8") { reader ->
-        localProperties.load(reader)
+    localPropertiesFile.withInputStream { stream ->
+        localProperties.load(stream)
     }
 }
 
@@ -23,8 +26,21 @@ def flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "
 
 android {
     namespace "com.booox.myflutter"
-    compileSdkVersion flutter.compileSdkVersion
+
+    // 🔥 Flutter 기본값 사용 ❌ → 직접 고정
+    compileSdk 34
     ndkVersion flutter.ndkVersion
+
+    defaultConfig {
+        applicationId "com.booox.myflutter"
+
+        // 🔥 google_mobile_ads 요구사항
+        minSdkVersion flutter.minSdkVersion
+        targetSdk 35
+
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -37,14 +53,6 @@ android {
 
     sourceSets {
         main.java.srcDirs += "src/main/kotlin"
-    }
-
-    defaultConfig {
-        applicationId "com.booox.myflutter"
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 35
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
     }
 
     signingConfigs {
@@ -63,8 +71,10 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled false
             shrinkResources false
-            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"),
+            proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
+            )
         }
     }
 }
