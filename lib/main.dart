@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:myflutter/src/model/number.dart';
 import 'package:myflutter/util/helper/network_helper.dart';
@@ -151,30 +150,24 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ), child: Text('여러 앱'),
-            ),
-            ListTile(
-              title: Text('숮자 증가'),
-              onTap: () {
-
-              },
-            ),
-            ListTile(
-              title: Text('갓챠'),
-              onTap: () {
-
-              },
-            )
-          ],
-        ),
-      ),
+      // drawer: Drawer(
+      //   child: ListView(
+      //     padding: EdgeInsets.zero,
+      //     children: [
+      //       const DrawerHeader(
+      //         decoration: BoxDecoration(
+      //           color: Colors.blue,
+      //         ), child: Text('여러 앱'),
+      //       ),
+      //       ListTile(
+      //         title: Text('숫자 증가'),
+      //         onTap: () {
+      //           Navigator.pop(context);
+      //         },
+      //       ),
+      //     ],
+      //   ),
+      // ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
