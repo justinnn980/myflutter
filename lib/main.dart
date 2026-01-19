@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void searchNumberList() async {
     try {
       final res = await NetworkHelper.dio.get(
-        'https://hello-spring-3t9w.onrender.com/api/numbers/numberAll',
+        'https://hello-spring-1-t4e1.onrender.com/api/numbers/numberAll',
       );
 
       final List<dynamic> data =
@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void numbertotal() async {
     try {
       final res = await NetworkHelper.dio.get(
-        'https://hello-spring-3t9w.onrender.com/api/numbers/total',
+        'https://hello-spring-1-t4e1.onrender.com/api/numbers/total',
       );
       logger.d('$res');
     } catch (e, s) {
@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void postCount() async {
     try {
       final res = await NetworkHelper.dio.post(
-        'https://hello-spring-3t9w.onrender.com/api/numbers',
+        'https://hello-spring-1-t4e1.onrender.com/api/numbers',
       );
       final data = res.data is String ? jsonDecode(res.data) : res.data;
 
@@ -104,10 +104,27 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void postMinus() async {
+    try {
+      final res = await NetworkHelper.dio.post(
+        'https://hello-spring-1-t4e1.onrender.com/api/numbers/minus',
+      );
+      final data = res.data is String ? jsonDecode(res.data) : res.data;
+
+      final number = Number.fromJson(data as Map<String, dynamic>);
+
+      setState(() {
+        numberList = [number];
+      });
+    } catch (e, s) {
+      logger.d('fail post Minus', error: e, stackTrace: s);
+    }
+  }
+
   void deleteAll() async {
     try {
       final res = await NetworkHelper.dio.delete(
-        'https://hello-spring-3t9w.onrender.com/api/numbers/deleteall',
+        'https://hello-spring-1-t4e1.onrender.com/api/numbers/deleteall',
       );
       final data = res.data is String ? jsonDecode(res.data) : res.data;
 
@@ -182,21 +199,30 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           Align(
             alignment: Alignment(
-                Alignment.bottomRight.x, Alignment.bottomRight.y - 0.2),
+                Alignment.bottomRight.x, Alignment.bottomRight.y - 0.4),
             child: FloatingActionButton(
               onPressed: deleteAll,
-              tooltip: 'Increment',
+              tooltip: 'Reset',
               child: const Icon(Icons.refresh),
+            ),
+          ),
+          Align(
+            alignment: Alignment(
+                Alignment.bottomRight.x, Alignment.bottomRight.y - 0.2),
+            child: FloatingActionButton(
+              onPressed: postCount,
+              tooltip: 'Add',
+              child: const Icon(Icons.add),
             ),
           ),
           Align(
             alignment: Alignment.bottomRight,
             child: FloatingActionButton(
-              onPressed: postCount,
-              tooltip: 'Increment',
-              child: const Icon(Icons.add),
+              onPressed: postMinus,
+              tooltip: 'Minus',
+              child: const Icon(Icons.remove),
             ),
-          )
+          ),
         ],
       ),
     );
